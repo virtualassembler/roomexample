@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.david.roomexample.adapters.CustomAdapter
 import com.david.roomexample.interfaces.AdapterEvents
 import com.david.roomexample.model.ApiMovie
 import com.david.roomexample.model.DataSource
-import com.david.roomexample.adapters.CustomAdapter
-import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
 
@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity(), AdapterEvents, DataSource.ResponseInte
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
     private lateinit var imageRequester: DataSource
     private lateinit var adapter: CustomAdapter
+    private lateinit var movieRepository: MovieRepository
+
     private var layoutState: Int = LINEAR_LAYOUT
 
     companion object {
@@ -83,6 +85,11 @@ class MainActivity : AppCompatActivity(), AdapterEvents, DataSource.ResponseInte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initData()
+        setRecyclerViewScrollListener()
+    }
+
+    private fun initData() {
         adapter = CustomAdapter(this)
         linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = linearLayoutManager
@@ -90,9 +97,12 @@ class MainActivity : AppCompatActivity(), AdapterEvents, DataSource.ResponseInte
         gridLayoutManager = GridLayoutManager(this, 2)
         staggeredGridLayoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
         imageRequester = DataSource(this)
         imageRequester.getData()
-        setRecyclerViewScrollListener()
+
+        movieRepository = MovieRepository(applicationContext)
+        movieRepository.syncData()
     }
 
     private fun setRecyclerViewScrollListener() {

@@ -19,14 +19,13 @@ import okhttp3.logging.HttpLoggingInterceptor
  * @author david.mazo
  */
 
-class DataSource(listeningActivity: ResponseInterface) {
+class DataSource(private val listeningActivity: ResponseInterface?) {
 
     interface ResponseInterface {
         fun sendResponse(response: ArrayList<ApiMovie>?)
     }
 
     var isLoadingData: Boolean = false
-    private val responseListener: ResponseInterface
     private val retrofit: Retrofit
     private val service: ApiService
 
@@ -34,7 +33,6 @@ class DataSource(listeningActivity: ResponseInterface) {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BASIC
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
-        responseListener = listeningActivity
         retrofit = Retrofit.Builder()
                 .baseUrl(BaseUrl)
                 .client(client)
@@ -71,7 +69,7 @@ class DataSource(listeningActivity: ResponseInterface) {
     private fun itemResponse(apiResponse: Response<ApiResponse>?) {
 
         apiResponse?.body()?.let { response ->
-            responseListener.sendResponse(response.results)
+            listeningActivity?.sendResponse(response.results)
         }
     }
 
