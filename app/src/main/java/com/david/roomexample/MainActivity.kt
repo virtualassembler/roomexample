@@ -10,7 +10,7 @@ import android.os.AsyncTask
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
+import android.util.Log
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,18 +19,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Thread {
-            var db = Room.databaseBuilder(applicationContext,MovieDatabase::class.java,"MovieDb")
-                .fallbackToDestructiveMigration()
-                .build()
-        /*
-//            var mv = MovieEntity()
-//            mv.id = 1
-//            mv.name = "una_pelicula_cualquiera"
-//            db.movieDAO().saveMovie(mv)
+        var db = Room.databaseBuilder(applicationContext,MovieDatabase::class.java,"MovieDb")
+            .fallbackToDestructiveMigration()
+            .build()
 
-         */
-        //}.start()
+        Thread {
+            var mv = MovieEntity()
+            mv.name = "UNA_PELICULA_CUALQUIERA"
+            db.movieDAO().saveMovie(mv)
+            val moviesFromDb = db.movieDAO().getMovies()
+
+            moviesFromDb.forEachIndexed { index, element ->
+                Log.d("#001","query: "+index.toString()+element.toString())
+            }
+
+            for(movie in moviesFromDb){
+                Log.d("#002","query: "+movie.toString())
+            }
+
+            db.close()
+        }.start()
 
         //id dataTextView
     }
