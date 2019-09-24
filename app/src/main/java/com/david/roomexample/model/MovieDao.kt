@@ -12,7 +12,7 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun saveMovie(movie: MovieEntity)
 
-    @Query("SELECT * from movies")
+    @Query("SELECT * from movie")
     fun getMovies(): List<MovieEntity>
 
     /*

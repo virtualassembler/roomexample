@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RoomExample</string>
+    <string name="linearlayoutmanager">linearLayoutManager</string>
+    <string name="average">average</string>
+    <string name="release_date">release_date</string>
+    <string name="imageitem">imageitem</string>
 </resources>

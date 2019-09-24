@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
  * @author david.mazo
  */
 
-@Entity(tableName = "movies")
+@Entity(tableName = "movie")
 data class MovieEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") var id: Int =0,
