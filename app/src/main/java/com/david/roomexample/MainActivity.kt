@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.util.Log
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
             db.close()
         }.start()
+
 
         //id dataTextView
     }
