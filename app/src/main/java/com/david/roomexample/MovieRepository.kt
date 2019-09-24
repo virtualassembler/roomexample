@@ -58,10 +58,10 @@ class MovieRepository(applicationContext: Context) {
     fun saveMovieIntoDB(movie: ApiMovie) {
         Thread {
             if (movieDao.isOpen) {
-                movieDao.runInTransaction {
+                    movieDao.runInTransaction {
                     movieDao.movieDAO().saveMovie(movie)
                 }
-               // movieDao.close()
+                movieDao.close()
             }
         }.start()
     }
