@@ -3,6 +3,8 @@ package com.david.roomexample
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
+import com.david.roomexample.adapters.CustomAdapter
+import com.david.roomexample.interfaces.AdapterEvents
 import com.david.roomexample.model.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,10 +16,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MovieRepository(applicationContext: Context) {
 
+
     private val retrofit: Retrofit
     private val service: ApiService
 
-    private var movieDao: MovieDatabase
+    private var movieDatabase: MovieDatabase
 
     init {
         val interceptor = HttpLoggingInterceptor()
@@ -30,7 +33,7 @@ class MovieRepository(applicationContext: Context) {
             .build()
         service = retrofit.create(ApiService::class.java)
 
-        movieDao = Room.databaseBuilder(applicationContext, MovieDatabase::class.java,"MovieDb")
+        movieDatabase = Room.databaseBuilder(applicationContext, MovieDatabase::class.java,"MovieDb")
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -57,12 +60,47 @@ class MovieRepository(applicationContext: Context) {
 
     fun saveMovieIntoDB(movie: ApiMovie) {
         Thread {
-            if (movieDao.isOpen) {
-                    movieDao.runInTransaction {
-                    movieDao.movieDAO().saveMovie(movie)
+            if (movieDatabase.isOpen) {
+                    movieDatabase.runInTransaction {
+                    movieDatabase.movieDAO().saveMovie(movie)
                 }
-                movieDao.close()
+                movieDatabase.close()
             }
         }.start()
     }
+
+
+
+
+
+
+
+   fun getMoviesFromLocalDB(listener: AdapterEvents, context: Context) {
+       Thread {
+           var arrayListItems:ArrayList<ApiMovie>
+           var listItems:List<ApiMovie>
+            if (movieDatabase.isOpen) {
+                movieDatabase.runInTransaction {
+                    listItems = movieDatabase.movieDAO().getMovies()
+
+                    val array = arrayListOf<ApiMovie>()
+                    array.addAll(listItems)
+                    arrayListItems=ArrayList(listItems)
+
+
+                    CustomAdapter(listener,context).showAll(arrayListItems)
+                    movieDatabase.close()
+                }
+            }else{
+                Log.e("#010","error #010")
+            }
+       }.start()
+    }
+
+
+    fun aa() {
+        Log.e("asa","sadf")
+    }
+
+
 }

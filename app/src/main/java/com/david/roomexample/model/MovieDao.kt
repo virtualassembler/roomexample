@@ -3,6 +3,7 @@ package com.david.roomexample.model
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface MovieDao {
@@ -10,10 +11,13 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun saveMovie(movie: ApiMovie)
 
-/*
-@Query("SELECT * from movie")
-fun getMovies(): List<MovieEntity>
+    @Query("SELECT * from movie")
+    fun getMovies(): List<ApiMovie>
 
+
+
+
+    /*
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun saveMovie(movie: MovieEntity)
 

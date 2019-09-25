@@ -1,18 +1,21 @@
 package com.david.roomexample.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.david.roomexample.MovieRepository
+import com.david.roomexample.RawData
 import com.david.roomexample.interfaces.AdapterEvents
 import com.david.roomexample.model.ApiMovie
 import kotlinx.android.synthetic.main.list_item.view.imageItem
 import kotlinx.android.synthetic.main.list_item.view.original_title
 import kotlinx.android.synthetic.main.list_item.view.ratingBar
 
-class CustomAdapter(private val listener: AdapterEvents) :
+class CustomAdapter(private val listener: AdapterEvents,private val context: Context) :
         RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     private val itemList: ArrayList<ApiMovie> = arrayListOf()
@@ -35,9 +38,26 @@ class CustomAdapter(private val listener: AdapterEvents) :
         holder.bindItem(itemList[position], listener)
     }
 
+
+
     fun addAll(items: ArrayList<ApiMovie>) {
         itemList.addAll(items)
         notifyItemRangeInserted(itemList.size - items.size, items.size)
+    }
+
+//    fun addAll(items: ArrayList<ApiMovie>) {
+//        RawData().getItemsList(context)
+//        itemList.addAll(RawData().getItemsList(context))
+//        notifyItemRangeInserted(itemList.size - items.size, items.size)
+//    }
+
+//    fun addAll(items: ArrayList<ApiMovie>) {
+//        MovieRepository(context).getMoviesFromLocalDB(listener,context)
+//    }
+
+    fun showAll(itemsMovies: ArrayList<ApiMovie>) {
+        itemList.addAll(itemsMovies)
+        notifyItemRangeInserted(itemList.size - itemsMovies.size, itemsMovies.size)
     }
 
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {

@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), AdapterEvents, DataSource.ResponseInte
     }
 
     private fun initData() {
-        adapter = CustomAdapter(this)
+        adapter = CustomAdapter(this,applicationContext)
         linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = adapter

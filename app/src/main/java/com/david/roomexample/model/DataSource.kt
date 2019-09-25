@@ -10,9 +10,6 @@ import java.util.ArrayList
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-
-
-
 /**
  * DataService provides all data related to items
  *
@@ -67,33 +64,32 @@ class DataSource(private val listeningActivity: ResponseInterface?) {
     }
 
     private fun itemResponse(apiResponse: Response<ApiResponse>?) {
-
         apiResponse?.body()?.let { response ->
             listeningActivity?.sendResponse(response.results)
         }
     }
 
-    fun getDataDetail() {
-        val call = service.getCurrentData(AppId)
-        isLoadingData = true
-        call.enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                if (response.code() == 200) {
-                    itemResponse(response)
-                } else {
-                    itemResponse(null)
-                }
-                isLoadingData = false
-            }
-
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                t.printStackTrace()
-                itemResponse(null)
-                isLoadingData = false
-            }
-        })
-
-    }
+//    fun getDataDetail() {
+//        val call = service.getCurrentData(AppId)
+//        isLoadingData = true
+//        call.enqueue(object : Callback<ApiResponse> {
+//            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+//                if (response.code() == 200) {
+//                    itemResponse(response)
+//                } else {
+//                    itemResponse(null)
+//                }
+//                isLoadingData = false
+//            }
+//
+//            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+//                t.printStackTrace()
+//                itemResponse(null)
+//                isLoadingData = false
+//            }
+//        })
+//
+//    }
 
 
     companion object {
