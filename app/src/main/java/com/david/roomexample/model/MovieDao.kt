@@ -14,26 +14,20 @@ interface MovieDao {
     @Query("SELECT * from movie")
     fun getMovies(): List<ApiMovie>
 
-
-
-
     /*
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun saveMovie(movie: MovieEntity)
-
-
-@Insonflict = OnConflictStrategy.REPLACE)
-suspend fun insertMovie(movieEntity: MovieEntity)
-@Query("SELECT * FROM movies LIMIT 1")
-suspend fun getAppMovie(): MovieEntity?
-@Update
-suspend fun update(movieEntity: MovieEntity)
-@Delete
-suspend fun deleteMovie(movieEntity: MovieEntity)
-@Transaction
-suspend fun setMovie(movieEntity: MovieEntity) {
+    @Insonflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovie(movieEntity: MovieEntity)
+    @Query("SELECT * FROM movies LIMIT 1")
+    suspend fun getAppMovie(): MovieEntity?
+    @Update
+    suspend fun update(movieEntity: MovieEntity)
+    @Delete
+    suspend fun deleteMovie(movieEntity: MovieEntity)
+    @Transaction
+    suspend fun setMovie(movieEntity: MovieEntity) {
     deleteMovie(movieEntity)
     insertMovie(movieEntity)
-}
-*/
+    */
 }
