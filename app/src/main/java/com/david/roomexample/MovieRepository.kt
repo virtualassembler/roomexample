@@ -26,16 +26,18 @@ class MovieRepository(applicationContext: Context) {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BASIC
         val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
         retrofit = Retrofit.Builder()
             .baseUrl(DataSource.BaseUrl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
         service = retrofit.create(ApiService::class.java)
 
-        movieDatabase = Room.databaseBuilder(applicationContext, MovieDatabase::class.java,"MovieDb")
-            .fallbackToDestructiveMigration()
-            .build()
+        movieDatabase =
+            Room.databaseBuilder(applicationContext, MovieDatabase::class.java, "MovieDb")
+                .build()
     }
 
     fun syncData() {
@@ -45,8 +47,10 @@ class MovieRepository(applicationContext: Context) {
                     Log.e("#009", "respuesta" + response.code().toString())
                     if (response.code() == 200) {
                         response.body()?.let { response ->
-                            for (item: ApiMovie in response.results as List<ApiMovie>) {
-                                saveMovieIntoDB(item)
+                            if (response.results != null) {
+                                for (item: ApiMovie in response.results) {
+                                    saveMovieIntoDB(item)
+                                }
                             }
                         }
                     }
@@ -59,47 +63,37 @@ class MovieRepository(applicationContext: Context) {
     }
 
     fun saveMovieIntoDB(movie: ApiMovie) {
-        Thread {
-            if (movieDatabase.isOpen) {
-                    movieDatabase.runInTransaction {
-                    movieDatabase.movieDAO().saveMovie(movie)
-                }
-                movieDatabase.close()
+        if (movieDatabase.isOpen) {
+            movieDatabase.runInTransaction {
+                movieDatabase.movieDAO().saveMovie(movie)
             }
-        }.start()
+        }
     }
 
-
-
-
-
-
-
-   fun getMoviesFromLocalDB(listener: AdapterEvents, context: Context) {
-       Thread {
-           var arrayListItems:ArrayList<ApiMovie>
-           var listItems:List<ApiMovie>
+    fun getMoviesFromLocalDB(listener: AdapterEvents, context: Context) {
+        Thread {
+            var arrayListItems: ArrayList<ApiMovie>
+            var listItems: List<ApiMovie>
             if (movieDatabase.isOpen) {
                 movieDatabase.runInTransaction {
                     listItems = movieDatabase.movieDAO().getMovies()
 
                     val array = arrayListOf<ApiMovie>()
                     array.addAll(listItems)
-                    arrayListItems=ArrayList(listItems)
+                    arrayListItems = ArrayList(listItems)
 
 
-                    CustomAdapter(listener,context).showAll(arrayListItems)
-                    movieDatabase.close()
+                    CustomAdapter(listener, context).showAll(arrayListItems)
                 }
-            }else{
-                Log.e("#010","error #010")
+            } else {
+                Log.e("#010", "error #010")
             }
-       }.start()
+        }.start()
     }
 
 
     fun aa() {
-        Log.e("asa","sadf")
+        Log.e("asa", "sadf")
     }
 
 

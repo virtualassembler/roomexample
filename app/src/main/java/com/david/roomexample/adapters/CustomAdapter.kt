@@ -39,11 +39,11 @@ class CustomAdapter(private val listener: AdapterEvents,private val context: Con
     }
 
 
-
-    fun addAll(items: ArrayList<ApiMovie>) {
-        itemList.addAll(items)
-        notifyItemRangeInserted(itemList.size - items.size, items.size)
-    }
+//
+//    fun addAll(items: ArrayList<ApiMovie>) {
+//        itemList.addAll(items)
+//        notifyItemRangeInserted(itemList.size - items.size, items.size)
+//    }
 
 //    fun addAll(items: ArrayList<ApiMovie>) {
 //        RawData().getItemsList(context)
@@ -51,9 +51,9 @@ class CustomAdapter(private val listener: AdapterEvents,private val context: Con
 //        notifyItemRangeInserted(itemList.size - items.size, items.size)
 //    }
 
-//    fun addAll(items: ArrayList<ApiMovie>) {
-//        MovieRepository(context).getMoviesFromLocalDB(listener,context)
-//    }
+    fun addAll(items: ArrayList<ApiMovie>) {
+        MovieRepository(context).getMoviesFromLocalDB(listener,context)
+    }
 
     fun showAll(itemsMovies: ArrayList<ApiMovie>) {
         itemList.addAll(itemsMovies)
